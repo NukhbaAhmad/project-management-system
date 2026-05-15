@@ -75,6 +75,18 @@ projectSchema.pre("save", async function () {
   }
 });
 
+// Soft delete of tasks on trash
+projectSchema.post("save", async function (doc) {
+  if (doc.isModified("is_trashed")) {
+    const Task = require("./task.model");
+    await Task.updateMany(
+      { projectId: doc._id },
+      { is_trashed: doc.is_trashed }
+    );
+  }
+});
+
+// Indexing for faster querying
 projectSchema.index(
   { createdBy: 1, title: 1, is_trashed: 1 },
   { unique: true, partialFilterExpression: { is_trashed: false } }

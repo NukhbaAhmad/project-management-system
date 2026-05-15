@@ -1,4 +1,6 @@
 const userServices = require("./user.service");
 const authServices = require("./auth.service");
 const projectServices = require("./project.service");
-module.exports = { userServices, authServices, projectServices };
+const taskServices = require("./task.service");
+
+module.exports = { userServices, authServices, projectServices, taskServices };
