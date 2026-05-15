@@ -6,7 +6,7 @@ const createTask = {
     projectId: Joi.string().custom(objectId).required(),
     title: Joi.string().required().trim(),
     status: Joi.string()
-      .valid("Pending", "In_Progress", "Completed")
+      .valid("pending", "in_progress", "completed")
       .optional(),
   }),
 };
@@ -15,7 +15,7 @@ const getTasks = {
   query: Joi.object().keys({
     projectId: Joi.string().custom(objectId).optional(),
     status: Joi.string()
-      .valid("Pending", "In_Progress", "Completed")
+      .valid("pending", "in_progress", "completed")
       .optional(),
     is_trashed: Joi.boolean().optional(),
     title: Joi.string().trim().optional(),
@@ -38,7 +38,7 @@ const updateTask = {
   body: Joi.object()
     .keys({
       title: Joi.string().trim(),
-      status: Joi.string().valid("Pending", "In_Progress", "Completed"),
+      status: Joi.string().valid("pending", "in_progress", "completed"),
     })
     .min(1),
 };
