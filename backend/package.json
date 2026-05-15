@@ -8,7 +8,13 @@
     "#utils": "./src/utils/index.js",
     "#config": "./src/config/index.js",
     "#middlewares": "./src/middlewares/index.js",
-    "#constants": "./src/constants/index.js"
+    "#constants": "./src/constants/index.js",
+    "#routes/*": "./src/routes/*.js",
+    "#models": "./src/models/index.js",
+    "#helpers": "./src/helpers/index.js",
+    "#services": "./src/services/index.js",
+    "#controllers": "./src/controllers/index.js",
+    "#validations": "./src/validations/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
@@ -19,14 +25,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express-rate-limit": "^8.5.2",
     "http-status": "^2.1.0",
     "joi": "^18.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
-    "passport": "^0.7.0"
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

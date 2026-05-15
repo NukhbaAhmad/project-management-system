@@ -1,18 +1,31 @@
 const mongoose = require("mongoose");
 const { status: httpStatus } = require("http-status");
 const { ApiError } = require("#utils");
+const { envConfig } = require("#config");
+const { generalHelpers } = require("#helpers");
 const { errorLabels } = require("#constants");
 
 const formatMongooseError = (err) => {
   if (err instanceof mongoose.Error.CastError) {
-    const fieldName = err.path === "_id" ? "ID" : err.path;
+    const fieldName = err.path === "_id" ? "id" : err.path.toLowerCase();
     return `Invalid ${fieldName}.`;
   }
+
   if (err instanceof mongoose.Error.ValidationError) {
-    return Object.values(err.errors).map((el) => ({
-      field: errorLabels[el.path] || el.path,
-      message: el.message,
-    }));
+    return Object.values(err.errors).map((el) => {
+      const rawField = errorLabels[el.path] || el.path;
+
+      //  Capitalize message
+      const formattedMessage = el.message.replace(
+        el.path,
+        generalHelpers.capitalize(rawField)
+      );
+
+      return {
+        field: generalHelpers.lowerCase(rawField),
+        message: generalHelpers.capitalize(formattedMessage),
+      };
+    });
   }
 
   return err.message;
@@ -30,7 +43,7 @@ const errorConverter = (err, req, res, next) => {
     let errors = null;
     if (error instanceof mongoose.Error) {
       const formatted = formatMongooseError(error);
-      if (formatted.length > 0) {
+      if (Array.isArray(formatted)) {
         errors = formatted;
         message = "Validation Error";
       } else {
@@ -48,17 +61,22 @@ const errorConverter = (err, req, res, next) => {
   }
   next(error);
 };
+
 const errorHandler = (err, req, res, next) => {
-  const { statusCode, message, errors } = err;
-  res.locals.errorMessage = err.message;
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  const { errors } = err;
+
+  res.locals.errorMessage = message;
+
   const response = {
-    status: statusCode || 500,
+    status: statusCode,
     message,
     ...(errors && { errors }),
   };
-  // For development show consoles.
-  console.log("Response Error:", response);
-
+  if (envConfig.port.env === "development") {
+    console.log("Response Error:", response);
+  }
   res.status(statusCode).send(response);
 };
 module.exports = { errorHandler, errorConverter };
