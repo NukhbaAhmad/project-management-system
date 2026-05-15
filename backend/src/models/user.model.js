@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 const bcrypt = require("bcrypt");
 const { paginate, toJSON, doesIdExists } = require("./plugins");
+const Project = require("./project.model");
 const userSchema = new Schema(
   {
     name: {
@@ -64,5 +65,17 @@ userSchema.pre("save", async function () {
   if (!user.isModified("password")) return;
   user.password = await bcrypt.hash(user.password, 10);
 });
+
+userSchema.pre(
+  "deleteOne",
+  { document: false, query: true },
+  async function () {
+    const userId = this.getFilter()._id;
+    const projects = await Project.find({ createdBy: userId });
+    const projectIds = projects.map((p) => p._id);
+    // await Task.deleteMany({ projectId: { $in: projectIds } });
+    await Project.deleteMany({ createdBy: userId });
+  }
+);
 const User = model("User", userSchema);
 module.exports = User;

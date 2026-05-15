@@ -1,10 +1,12 @@
 const { status: httpStatus } = require("http-status");
-const { User } = require("../models");
-const { ApiError, pick } = require("../utils");
+const { User } = require("#models");
+const { filterParams } = require("#constants");
+const { ApiError, pick, filter } = require("#utils");
 
 const queryUsers = async (req) => {
-  const filters = pick(req.query, ["name", "username", "email"]);
-  const options = pick(req.query, ["limit", "page", "sortBy"]);
+  const filters = pick(req.query, filterParams.users);
+  filter.applyStringFilters(filters, filterParams.users);
+  const options = pick(req.query, filterParams.options);
   return await User.paginate(filters, options);
 };
 
@@ -13,7 +15,7 @@ const updateUserById = async (id, body) => {
   if (!user) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
-      message: "User not found",
+      message: "User not found.`",
     });
   }
   if (body.email && (await User.isEmailTaken(body.email, id))) {
@@ -32,7 +34,7 @@ const updateUserById = async (id, body) => {
   }
   Object.assign(user, body);
   await user.save();
-  return user;
+  return { message: "User updated successfully.", user };
 };
 
 const getUserById = async (userId) => {
@@ -40,7 +42,7 @@ const getUserById = async (userId) => {
   if (!user) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
-      message: "User not found",
+      message: "User not found.",
     });
   }
   return user;
@@ -54,7 +56,8 @@ const deleteUser = async (userId, currentUserId) => {
     });
   }
 
-  const user = await User.findByIdAndDelete(userId);
+  const user = await User.deleteOne({ _id: userId });
+
   if (!user) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,

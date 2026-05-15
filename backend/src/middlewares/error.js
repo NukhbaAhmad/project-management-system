@@ -65,6 +65,8 @@ const errorConverter = (err, req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
+  // const message = statusCode === 500 ? "Internal Server Error" : err.message;
+
   const { errors } = err;
 
   res.locals.errorMessage = message;
