@@ -1,0 +1,33 @@
+{
+  "name": "project-management-system",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "private": true,
+  "imports": {
+    "#*": "./src/*",
+    "#utils": "./src/utils/index.js",
+    "#config": "./src/config/index.js",
+    "#middlewares": "./src/middlewares/index.js",
+    "#constants": "./src/constants/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express-rate-limit": "^8.5.2",
+    "http-status": "^2.1.0",
+    "joi": "^18.2.1",
+    "mongoose": "^9.6.2",
+    "passport": "^0.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
