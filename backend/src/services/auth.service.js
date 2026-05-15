@@ -12,14 +12,14 @@ const registerUser = async (req) => {
   if (await User.isEmailTaken(payload.email)) {
     throw new ApiError({
       statusCode: httpStatus.BAD_REQUEST,
-      message: "Email is already taken",
+      message: "Email already exists.",
       isOperational: true,
     });
   }
   if (await User.isUsernameTaken(payload.username)) {
     throw new ApiError({
       statusCode: httpStatus.BAD_REQUEST,
-      message: "Username is already taken",
+      message: "Username already exists.",
       isOperational: true,
     });
   }
@@ -29,7 +29,6 @@ const registerUser = async (req) => {
   return {
     user,
     access_token,
-    message: "User created successfully.",
   };
 };
 
@@ -47,7 +46,7 @@ const loginUser = async (req) => {
   }
 
   const access_token = tokenHelpers.generateToken(user._id);
-  return { user, access_token, message: "Login successful." };
+  return { user, access_token };
 };
 
 module.exports = { registerUser, loginUser };

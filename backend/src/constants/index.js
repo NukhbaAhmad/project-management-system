@@ -1,3 +1,3 @@
 const errorLabels = require("./errorLabels");
-
-module.exports = { errorLabels };
+const filterParams = require("./filterParams");
+module.exports = { errorLabels, filterParams };
