@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const SignIn = () => {
+const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -151,4 +151,4 @@ const SignIn = () => {
     </div>
   );
 };
-export default SignIn;
+export default SignInForm;
