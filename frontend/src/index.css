@@ -17,19 +17,18 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d1321; /* Matches Page Background */
+  background: #0d1321;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f2937; /* Matches Theme Component Border Color */
+  background: #1f2937;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1e293b; /* Subtle highlight on hover */
+  background: #1e293b;
 }
 
-/* Base Dark Mode override safety rules */
 .dark ::-webkit-scrollbar-track {
   background: #0d1321;
 }
@@ -42,10 +41,8 @@
   background: #1e293b;
 }
 
-/* 3. Firefox Engine Scrollbar Configurations */
 * {
   scrollbar-width: thin;
-  /* Format: thumb_color track_color */
   scrollbar-color: #1f2937 #0d1321;
 }
 
