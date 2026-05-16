@@ -89,28 +89,31 @@ The backend is a **REST API** built with **Express**, **MongoDB**, **JWT**, and 
 
 ## 📁 Monorepo Structure
 
+```text
 project-management-system/
-├── backend/ # Express API
-│ ├── src/
-│ │ ├── controllers/ # Route handlers
-│ │ ├── models/ # Mongoose models
-│ │ ├── routes/ # API endpoints
-│ │ ├── middlewares/ # Auth, validation, error handler
-│ │ └── validations/ # Joi schemas
-│ ├── .env # Backend environment variables
-│ └── package.json
-├── frontend/ # React app (Vite)
-│ ├── src/
-│ │ ├── api/ # Axios services
-│ │ ├── components/ # Reusable UI components
-│ │ ├── hooks/ # React Query hooks
-│ │ ├── pages/ # Route pages (Dashboard, Projects, Tasks, Profile)
-│ │ ├── types/ # TypeScript type definitions
-│ │ └── utils/ # Helpers, protected route, event bus
-│ ├── .env # Frontend environment variables
-│ └── package.json
-├── package.json # Root workspace config
-└── README.md # This file
+├── backend/                      # Express API
+│   ├── src/
+│   │   ├── controllers/          # Route handlers
+│   │   ├── models/               # Mongoose schemas & models
+│   │   ├── routes/               # API endpoint definitions
+│   │   ├── middlewares/          # Auth, Joi validation, error handlers
+│   │   └── validations/          # Joi validation schemas
+│   ├── .env                      # Backend environment variables
+│   └── package.json
+├── frontend/                     # React application (Vite)
+│   ├── src/
+│   │   ├── api/                  # Axios configuration and services
+│   │   ├── components/           # Reusable UI components
+│   │   ├── hooks/                # Custom TanStack Query hooks
+│   │   ├── pages/                # App views (Dashboard, Projects, Tasks, Profile)
+│   │   ├── types/                # Shared TypeScript definitions
+│   │   └── utils/                # Helper functions, route guards, event bus
+│   ├── .env                      # Frontend environment variables
+│   └── package.json
+├── package.json                  # Root npm workspaces configuration
+└── README.md                     # Documentation
+text
+```
 
 ## 🚀 How to Run the Project
 
@@ -121,17 +124,16 @@ project-management-system/
 
 ### 1. Clone the repository
 
-````bash
+```bash
 1. git clone https://github.com/your-username/project-management-system.git
 2. cd project-management-system
-3. Install dependencies (from root)
-bash
-npm install
-This will automatically install dependencies for both backend and frontend workspaces.
+3. Install dependencies (from root):
+- npm install
+- This will automatically install dependencies for both backend and frontend workspaces.
 
 4. Set up environment variables
-Backend (backend/.env):
-Frotend (frontend/.env):
+- Backend (backend/.env):
+- Frotend (frontend/.env):
 
 bash
 npm run dev
@@ -210,5 +212,5 @@ Express – backend framework
 
 MongoDB – database
 
-text
-````
+
+```
