@@ -11,7 +11,6 @@ import {
 import { Project } from "@/types/project";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import ProjectsTable from "@/components/projects/ProjectTable";
-import Pagination from "@/components/common/Pagination";
 import { ProjectFormModal } from "@/components/projects/ProjectFormModal";
 import { ConfirmModal } from "@/components/common/ConfirmModal";
 
@@ -41,12 +40,6 @@ const Projects: React.FC = () => {
   const restoreTasksMutation = useRestoreProjectTasks();
 
   const projects = data?.results || [];
-  const pagination = {
-    page: data?.page || 1,
-    pages: data?.pages || 1,
-    total: data?.total || 0,
-    limit: 10,
-  };
 
   // Handlers
   const handleCreate = (formData: { title: string; description?: string }) => {
@@ -116,14 +109,14 @@ const Projects: React.FC = () => {
     restoreTasksMutation.isPending;
 
   return (
-    <div className="min-h-screen bg-[#0d1321] p-4 md:p-6">
+    <div className="w-full bg-[#0d1321]">
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <h1 className="text-2xl font-semibold text-gray-100">Projects</h1>
           <button
             onClick={() => setModalOpen(true)}
-            className="rounded-md bg-[#465FFF] px-4 py-2 text-white hover:bg-brand-600 transition"
+            className="rounded-md bg-[#465FFF] px-2 py-2 text-white hover:bg-brand-600 transition"
           >
             + New Project
           </button>
@@ -153,14 +146,6 @@ const Projects: React.FC = () => {
             setConfirmDialog({ type: "restoreTasks", project: p })
           }
         />
-
-        {/* Pagination */}
-        <Pagination
-          currentPage={pagination.page}
-          totalPages={pagination.pages}
-          onPageChange={setPage}
-        />
-
         {/* Modals */}
         <ProjectFormModal
           isOpen={modalOpen}
