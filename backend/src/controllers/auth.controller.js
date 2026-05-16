@@ -2,21 +2,20 @@ const { sendResponse } = require("#utils");
 const { authServices } = require("#services");
 const { status: httpStatus } = require("http-status");
 const { catchAsync } = require("#utils");
-const register = catchAsync(async (req, res,next) => {
+const register = catchAsync(async (req, res) => {
   const { user, access_token, message } = await authServices.registerUser(req);
   sendResponse(res, httpStatus.CREATED, {
-    message,
+    message: "User created successfully.",
     data: { user, access_token },
   });
 });
 
-const login = catchAsync(async (req, res, next) => {
+const login = catchAsync(async (req, res) => {
   const { user, access_token, message } = await authServices.loginUser(req);
-  sendResponse(res, httpStatus.OK, { message, data: { user, access_token } });
+  sendResponse(res, httpStatus.OK, {
+    message: "User logged in successfully.",
+    data: { user, access_token },
+  });
 });
 
-const logout = catchAsync(async (req, res, next) => {
-  sendResponse(res, httpStatus.OK, { message: "Logged out successfully" });
-});
-
-module.exports = { register, login, logout };
+module.exports = { register, login };

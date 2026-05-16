@@ -64,5 +64,19 @@ userSchema.pre("save", async function () {
   if (!user.isModified("password")) return;
   user.password = await bcrypt.hash(user.password, 10);
 });
+
+userSchema.pre(
+  "deleteOne",
+  { document: false, query: true },
+  async function () {
+    const Project = require("./project.model");
+    const Task = require("./task.model");
+    const userId = this.getFilter()._id;
+    const projects = await Project.find({ created_by: userId });
+    const projectIds = projects.map((p) => p._id);
+    await Task.deleteMany({ project_id: { $in: projectIds } });
+    await Project.deleteMany({ created_by: userId });
+  }
+);
 const User = model("User", userSchema);
 module.exports = User;

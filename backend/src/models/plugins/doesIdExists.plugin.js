@@ -2,7 +2,7 @@ const doesIdExists = (schema) => {
   if (!schema) {
     throw new ApiError({
       statusCode: httpStatus.BAD_REQUEST,
-      message: "User Schema is required.",
+      message: "Schema is required.",
     });
   }
   schema.statics.doesIdExists = async function (id) {
