@@ -20,13 +20,13 @@ const getProjects = {
 
 const getProject = {
   params: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).required(),
+    project_id: Joi.string().custom(objectId).required(),
   }),
 };
 
 const updateProject = {
   params: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).required(),
+    project_id: Joi.string().custom(objectId).required(),
   }),
   body: Joi.object()
     .keys({
@@ -41,13 +41,18 @@ const updateProject = {
 
 const deleteProject = {
   params: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).required(),
+    project_id: Joi.string().custom(objectId).required(),
   }),
 };
 
 const restoreProject = {
   params: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).required(),
+    project_id: Joi.string().custom(objectId).required(),
+  }),
+};
+const restoreProjectTasks = {
+  params: Joi.object().keys({
+    project_id: Joi.string().custom(objectId).required(),
   }),
 };
 
@@ -58,4 +63,5 @@ module.exports = {
   updateProject,
   deleteProject,
   restoreProject,
+  restoreProjectTasks,
 };
