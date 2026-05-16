@@ -1,6 +1,6 @@
 # Dependency directories
 **/node_modules/
-npm-debug.log*
+
 
 # Environment variables
 **/.env
@@ -24,5 +24,12 @@ Thumbs.db
 *.swp
 *.swo
 
+
 # Logs
+logs
 *.log
+npm-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
