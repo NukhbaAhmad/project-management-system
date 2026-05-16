@@ -15,6 +15,13 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "./src/pages"),
       "@components": path.resolve(__dirname, "./src/components"),
       "@icons": path.resolve(__dirname, "./src/assets/icons"),
+      "@types": path.resolve(__dirname, "./src/types"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
+      "@api": path.resolve(__dirname, "./src/api"),
+      "@context": path.resolve(__dirname, "./src/context"),
+      "@validations": path.resolve(__dirname, "./src/validations"),
+      "@constants": path.resolve(__dirname, "./src/constants"),
+      "@lib": path.resolve(__dirname, "./src/lib"),
     },
   },
 });

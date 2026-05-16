@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import SignIn from "./components/auth/SignInForm.tsx";
-import SignUp from "./components/auth/SignUpForm.tsx";
+import SignIn from "@/pages/Auth/SignIn.tsx";
+import SignUp from "@/pages/Auth/SignUp.tsx";
+import NotFound from "@/pages/NotFound";
 
 const App = () => {
   return (
@@ -9,6 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

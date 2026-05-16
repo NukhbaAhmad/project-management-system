@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "@/components/Form";
+import { Link } from "@/components/form";
 
 const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +54,7 @@ const SignInForm = () => {
               htmlFor="email"
               className="block text-sm font-medium text-slate-300"
             >
-              Email<span className="text-red-500">*</span>
+              Username/Email<span className="text-red-500">*</span>
             </label>
             <input
               id="email"
