@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignIn from "@/pages/Auth/SignIn.tsx";
 import SignUp from "@/pages/Auth/SignUp.tsx";
 import NotFound from "@/pages/NotFound";
+import Project from "@/pages/Project";
 import Dashboard from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/utils/protectedRoutes";
 import AppLayout from "@/layout/AppLayout";
@@ -15,7 +16,8 @@ const App = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />{" "}
+            <Route path="/projects" element={<Project />} />
           </Route>
         </Route>
 

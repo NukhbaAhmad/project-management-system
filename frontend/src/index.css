@@ -10,3 +10,45 @@
 .react-hot-toast-loading {
   border-left: 4px solid #3b82f6 !important;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1321; /* Matches Page Background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2937; /* Matches Theme Component Border Color */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e293b; /* Subtle highlight on hover */
+}
+
+/* Base Dark Mode override safety rules */
+.dark ::-webkit-scrollbar-track {
+  background: #0d1321;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #1e293b;
+}
+
+/* 3. Firefox Engine Scrollbar Configurations */
+* {
+  scrollbar-width: thin;
+  /* Format: thumb_color track_color */
+  scrollbar-color: #1f2937 #0d1321;
+}
+
+.dark * {
+  scrollbar-color: #1f2937 #0d1321;
+}
