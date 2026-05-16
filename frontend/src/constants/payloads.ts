@@ -1,7 +1,7 @@
 const payload = {
   auth: {
     register: ["name", "email", "username", "password"],
-    login: ["email", "password"],
+    login: ["identifier", "password"],
   },
 };
 

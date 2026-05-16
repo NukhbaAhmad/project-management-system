@@ -14,7 +14,7 @@ type RegisterArgs = {
 };
 
 type LoginArgs = {
-  email: string;
+  identifier: string;
   password: string;
 };
 
@@ -35,11 +35,11 @@ export const useRegisterUser = (): UseMutationResult<
       navigate("/");
     },
     onError: (error: any) => {
-     const errorMessage = parsedError(
-       error,
-       "Registration failed. Please try again."
-     );
-     showToast.error(errorMessage);
+      const errorMessage = parsedError(
+        error,
+        "Registration failed. Please try again."
+      );
+      showToast.error(errorMessage);
     },
   });
 };
@@ -53,15 +53,16 @@ export const useLoginUser = (): UseMutationResult<
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: ({ email, password }: LoginArgs) =>
-      authService.LOGIN(email, password),
+    mutationFn: ({ identifier, password }: LoginArgs) =>
+      authService.LOGIN(identifier, password),
     onSuccess: (res) => {
       loginUser(res.data.user, res.data.access_token);
-      showToast.success("Logged in successfully!");
+      showToast.success(res.message || "Logged in successfully!");
       navigate("/");
     },
     onError: (error: any) => {
-      const message = error.response?.message || "Invalid email or password.";
+      const message =
+        error.response?.data?.message || "Invalid email or password.";
       showToast.error(message);
     },
   });

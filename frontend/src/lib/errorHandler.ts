@@ -1,5 +1,5 @@
 const parsedError = (error: any, fallbackMessage: string): string => {
-  const serverData = error.response?.data;
+  const serverData = error?.response?.data;
 
   if (!serverData) return fallbackMessage;
 

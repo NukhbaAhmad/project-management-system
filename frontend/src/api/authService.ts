@@ -17,9 +17,12 @@ export const authService = {
     return data;
   },
 
-  LOGIN: async (email: string, password: string): Promise<AuthResponse> => {
+  LOGIN: async (
+    identifier: string,
+    password: string
+  ): Promise<AuthResponse> => {
     const { data } = await axiosInstance.post<AuthResponse>("/auth/login", {
-      identifier: email,
+      identifier,
       password,
     });
     return data;
