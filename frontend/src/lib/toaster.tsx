@@ -14,7 +14,7 @@ const toastOptions: ToastOptions = {
   },
 };
 
-export const CustomToaster = () => {
+const CustomToaster = () => {
   return (
     <Toaster
       position="top-right"
@@ -25,3 +25,4 @@ export const CustomToaster = () => {
     />
   );
 };
+export { CustomToaster };

@@ -89,13 +89,8 @@ const Dashboard = () => {
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="p-2 rounded-full bg-white/50">{card.icon}</div>
-                <span
-                  className={`text-xs font-semibold ${card.textColor} bg-white/30 px-2 py-1 rounded-full`}
-                >
-                  count
-                </span>
               </div>
-              <p className="text-gray-600 text-sm uppercase tracking-wide">
+              <p className="text-gray-600 text-md font-semibold tracking-wide">
                 {card.title}
               </p>
               <p className={`text-3xl font-bold ${card.textColor} mt-2`}>

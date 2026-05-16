@@ -6,7 +6,7 @@ export const dashboardService = {
     const { data } = await axiosInstance.get<{
       status: number;
       data: DashboardStats;
-    }>("/v1/dashboard");
+    }>("/dashboard");
     return data.data;
   },
 };
