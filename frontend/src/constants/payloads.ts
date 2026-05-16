@@ -7,6 +7,10 @@ const payload = {
     create: ["title"],
     update: ["title"],
   },
+  task: {
+    create: ["title", "status", "project_id"],
+    update: ["title", "status"],
+  },
 };
 
 export default payload;

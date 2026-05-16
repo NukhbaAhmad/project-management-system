@@ -8,7 +8,7 @@ const toastOptions: ToastOptions = {
     color: "#f1f5f9",
     borderRadius: "12px",
     padding: "10px 18px",
-    fontSize: "10px",
+    fontSize: "13px",
     fontWeight: "500",
     boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
   },
@@ -17,7 +17,7 @@ const toastOptions: ToastOptions = {
 const CustomToaster = () => {
   return (
     <Toaster
-      position="top-right"
+      position="bottom-right"
       toastOptions={toastOptions}
       reverseOrder={false}
       gutter={8}
