@@ -1,11 +1,17 @@
-import { BrowserRouter as Router, Routes } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-export default function App() {
+import SignIn from "./components/auth/SignIn.tsx";
+import SignUp from "./components/auth/SignUp.tsx";
+
+const App = () => {
   return (
-    <>
-      <Router>
-        <Routes></Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
-}
+};
+
+export default App;
