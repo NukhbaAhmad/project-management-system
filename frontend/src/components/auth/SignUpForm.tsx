@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { InputField, Link } from "@/components/Form";
 
 const SignUpForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,39 +29,23 @@ const SignUpForm = () => {
 
         {/* Registration Form */}
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {/* First Name & Last Name row */}
-          <div className="space-y-1.5">
-            <label
-              htmlFor="firstName"
-              className="block text-sm font-medium text-slate-300"
-            >
-              Name<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="firstName"
-              type="text"
-              placeholder="Enter your first name"
-              className="w-full rounded-xl bg-[#111928] border border-slate-800 px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
-              required
-            />
-          </div>
+          {/* Email input */}
+          <InputField
+            id="name"
+            label="Name"
+            type="text"
+            placeholder="Enter your name"
+            required
+          />
 
           {/* Email input */}
-          <div className="space-y-1.5">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-slate-300"
-            >
-              Email<span className="text-red-500">*</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="w-full rounded-xl bg-[#111928] border border-slate-800 px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all"
-              required
-            />
-          </div>
+          <InputField
+            id="email"
+            label="Email"
+            type="email"
+            placeholder="Enter your email"
+            required
+          />
 
           {/* Password input */}
           <div className="space-y-1.5">
@@ -126,7 +110,6 @@ const SignUpForm = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0d1527] transition-all cursor-pointer mt-2"
@@ -137,13 +120,11 @@ const SignUpForm = () => {
 
         {/* Footer Link */}
         <p className="text-center text-sm text-slate-400">
-          Already have an account?{" "}
           <Link
+            message="Already have an account?"
             to="/signin"
-            className="font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-          >
-            Sign In
-          </Link>
+            linkText="Sign In"
+          />
         </p>
       </div>
     </div>

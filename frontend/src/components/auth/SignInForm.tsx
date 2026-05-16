@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/components/Form";
 
 const SignInForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -139,13 +139,11 @@ const SignInForm = () => {
 
         {/* Footer Link */}
         <p className="text-center text-sm text-slate-400">
-          Don't have an account?{" "}
           <Link
+            message="Don't have an account?"
             to="/signup"
-            className="font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-          >
-            Sign Up
-          </Link>
+            linkText="Sign Up"
+          />
         </p>
       </div>
     </div>
