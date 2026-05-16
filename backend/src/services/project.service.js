@@ -1,5 +1,5 @@
 const { status: httpStatus } = require("http-status");
-const { Project } = require("#models");
+const { Project, Task } = require("#models");
 const { filterParams } = require("#constants");
 const { ApiError, pick, filter } = require("#utils");
 
@@ -9,7 +9,7 @@ const queryProjects = async (req) => {
   if (req.query.is_trashed !== undefined) {
     filters.is_trashed = req.query.is_trashed === "true";
   }
-  filters.createdBy = req.user.id;
+  filters.created_by = req.user.id;
   const options = pick(req.query, filterParams.options);
   const projects = await Project.paginate(filters, options);
   return projects;
@@ -23,12 +23,15 @@ const createProject = async (userId, body) => {
       isOperational: true,
     });
   }
-  const project = await Project.create({ ...body, createdBy: userId });
+  const project = await Project.create({ ...body, created_by: userId });
   return project;
 };
 
-const getProjectById = async (projectId, userId) => {
-  const project = await Project.findOne({ _id: projectId, createdBy: userId });
+const getProjectById = async (project_id, userId) => {
+  const project = await Project.findOne({
+    _id: project_id,
+    created_by: userId,
+  });
   if (!project) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
@@ -38,8 +41,11 @@ const getProjectById = async (projectId, userId) => {
   return project;
 };
 
-const updateProjectById = async (projectId, userId, payload) => {
-  const project = await Project.findOne({ _id: projectId, createdBy: userId });
+const updateProjectById = async (project_id, userId, payload) => {
+  const project = await Project.findOne({
+    _id: project_id,
+    created_by: userId,
+  });
   if (!project) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
@@ -58,8 +64,11 @@ const updateProjectById = async (projectId, userId, payload) => {
   return project;
 };
 
-const deleteProjectById = async (projectId, userId) => {
-  const project = await Project.findOne({ _id: projectId, createdBy: userId });
+const softDeleteProjectById = async (project_id, userId) => {
+  const project = await Project.findOne({
+    _id: project_id,
+    created_by: userId,
+  });
   if (!project) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
@@ -79,10 +88,10 @@ const deleteProjectById = async (projectId, userId) => {
   return project;
 };
 
-const restoreProjectById = async (projectId, userId) => {
+const restoreProjectById = async (project_id, userId) => {
   const project = await Project.findOne({
-    _id: projectId,
-    createdBy: userId,
+    _id: project_id,
+    created_by: userId,
     is_trashed: true,
   });
   if (!project) {
@@ -101,12 +110,54 @@ const restoreProjectById = async (projectId, userId) => {
   await project.save();
   return project;
 };
+const restoreTasksByProjectId = async (project_id, userId) => {
+  const project = await Project.findOne({
+    _id: project_id,
+    created_by: userId,
+  });
+  if (!project) {
+    throw new ApiError({
+      statusCode: httpStatus.NOT_FOUND,
+      message: "Project not found.",
+    });
+  }
+  if (project.is_trashed) {
+    throw new ApiError({
+      statusCode: httpStatus.BAD_REQUEST,
+      message: `Cannot restore tasks of a trashed project. Restore the %{project.title} project first. `,
+    });
+  }
 
+  // No Trashed Tasks found.
+  const trashedCount = await Task.countDocuments({
+    project_id,
+    is_trashed: true,
+    created_by: userId,
+  });
+  if (trashedCount === 0) {
+    return {
+      projectTitle: project.title,
+      restoredCount: 0,
+      message: `No trashed tasks found for this ${project.title}.`,
+    };
+  }
+
+  const result = await Task.updateMany(
+    { project_id, is_trashed: true, created_by: userId },
+    { is_trashed: false }
+  );
+  return {
+    projectTitle: project.title,
+    restoredCount: result.modifiedCount,
+    message: `${project.title}'s ${result.modifiedCount} task(s) restored successfully.`,
+  };
+};
 module.exports = {
   createProject,
   queryProjects,
   getProjectById,
   updateProjectById,
-  deleteProjectById,
+  softDeleteProjectById,
   restoreProjectById,
+  restoreTasksByProjectId,
 };

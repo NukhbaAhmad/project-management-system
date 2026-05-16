@@ -1,37 +1,63 @@
 const { status: httpStatus } = require("http-status");
-const { taskService } = require("#services");
+const { taskServices } = require("#services");
 const { catchAsync, sendResponse } = require("#utils");
 
 const createTask = catchAsync(async (req, res) => {
-  const task = await taskService.createTask(req.user.id, req.body);
+  const task = await taskServices.createTask(req.user.id, req.body);
   sendResponse(res, httpStatus.CREATED, {
-    message: "Task created",
+    message: "Task created successfully.",
     data: task,
   });
 });
 
 const getTasks = catchAsync(async (req, res) => {
-  const tasks = await taskService.queryTasks(req.user.id, req.query);
+  const tasks = await taskServices.queryTasks(req.user.id, req.query);
   sendResponse(res, httpStatus.OK, { data: tasks });
 });
 
 const getTask = catchAsync(async (req, res) => {
-  const task = await taskService.getTaskById(req.params.taskId, req.user.id);
+  const task = await taskServices.getTaskById(req.params.task_id, req.user.id);
   sendResponse(res, httpStatus.OK, { data: task });
 });
 
 const updateTask = catchAsync(async (req, res) => {
-  const task = await taskService.updateTaskById(
-    req.params.taskId,
+  const task = await taskServices.updateTaskById(
+    req.params.task_id,
     req.user.id,
     req.body
   );
-  sendResponse(res, httpStatus.OK, { message: "Task updated", data: task });
+  sendResponse(res, httpStatus.OK, {
+    message: "Task updated successfully.",
+    data: task,
+  });
 });
 
-const deleteTask = catchAsync(async (req, res) => {
-  await taskService.deleteTaskById(req.params.taskId, req.user.id);
-  sendResponse(res, httpStatus.OK, { message: "Task deleted" });
+const softDeleteTask = catchAsync(async (req, res) => {
+  const task = await taskServices.softDeleteTaskById(
+    req.params.task_id,
+    req.user.id
+  );
+  sendResponse(res, httpStatus.OK, {
+    message: "Task moved to trash successfully.",
+  });
 });
 
-module.exports = { createTask, getTasks, getTask, updateTask, deleteTask };
+const restoreTask = catchAsync(async (req, res) => {
+  const task = await taskServices.restoreTaskById(
+    req.params.task_id,
+    req.user.id
+  );
+  sendResponse(res, httpStatus.OK, {
+    message: "Task restored successfully.",
+    data: task,
+  });
+});
+
+module.exports = {
+  createTask,
+  getTasks,
+  getTask,
+  updateTask,
+  softDeleteTask,
+  restoreTask,
+};

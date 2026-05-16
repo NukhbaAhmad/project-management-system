@@ -17,7 +17,7 @@ const createProject = catchAsync(async (req, res) => {
 
 const getProject = catchAsync(async (req, res) => {
   const project = await projectServices.getProjectById(
-    req.params.projectId,
+    req.params.project_id,
     req.user.id
   );
   sendResponse(res, httpStatus.OK, { data: project });
@@ -25,7 +25,7 @@ const getProject = catchAsync(async (req, res) => {
 
 const updateProject = catchAsync(async (req, res) => {
   const project = await projectServices.updateProjectById(
-    req.params.projectId,
+    req.params.project_id,
     req.user.id,
     req.body
   );
@@ -36,7 +36,10 @@ const updateProject = catchAsync(async (req, res) => {
 });
 
 const deleteProject = catchAsync(async (req, res) => {
-  await projectServices.deleteProjectById(req.params.projectId, req.user.id);
+  await projectServices.softDeleteProjectById(
+    req.params.project_id,
+    req.user.id
+  );
   sendResponse(res, httpStatus.OK, {
     message: "Project moved to trash successfully.",
   });
@@ -44,12 +47,22 @@ const deleteProject = catchAsync(async (req, res) => {
 
 const restoreProject = catchAsync(async (req, res) => {
   const project = await projectServices.restoreProjectById(
-    req.params.projectId,
+    req.params.project_id,
     req.user.id
   );
   sendResponse(res, httpStatus.OK, {
     message: "Project restored successfully.",
     data: project,
+  });
+});
+const restoreTasksByProject = catchAsync(async (req, res) => {
+  const { project_id } = req.params;
+  const result = await projectServices.restoreTasksByProjectId(
+    project_id,
+    req.user.id
+  );
+  sendResponse(res, httpStatus.OK, {
+    message: result.message,
   });
 });
 
@@ -60,4 +73,5 @@ module.exports = {
   updateProject,
   deleteProject,
   restoreProject,
+  restoreTasksByProject,
 };

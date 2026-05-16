@@ -3,8 +3,9 @@ const { objectId } = require("./custom.validation");
 
 const createTask = {
   body: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).required(),
+    project_id: Joi.string().custom(objectId).required(),
     title: Joi.string().required().trim(),
+    description: Joi.string().optional().allow("").trim(),
     status: Joi.string()
       .valid("pending", "in_progress", "completed")
       .optional(),
@@ -13,7 +14,7 @@ const createTask = {
 
 const getTasks = {
   query: Joi.object().keys({
-    projectId: Joi.string().custom(objectId).optional(),
+    project_id: Joi.string().custom(objectId).optional(),
     status: Joi.string()
       .valid("pending", "in_progress", "completed")
       .optional(),
@@ -27,26 +28,43 @@ const getTasks = {
 
 const getTask = {
   params: Joi.object().keys({
-    taskId: Joi.string().custom(objectId).required(),
+    task_id: Joi.string().custom(objectId).required(),
   }),
 };
 
 const updateTask = {
   params: Joi.object().keys({
-    taskId: Joi.string().custom(objectId).required(),
+    task_id: Joi.string().custom(objectId).required(),
   }),
   body: Joi.object()
     .keys({
       title: Joi.string().trim(),
+      description: Joi.string().optional().allow("").trim(),
       status: Joi.string().valid("pending", "in_progress", "completed"),
     })
-    .min(1),
+    .min(1)
+    .messages({
+      "object.min": "Please provide project data to update.",
+    }),
 };
 
 const deleteTask = {
   params: Joi.object().keys({
-    taskId: Joi.string().custom(objectId).required(),
+    task_id: Joi.string().custom(objectId).required(),
   }),
 };
 
-module.exports = { createTask, getTasks, getTask, updateTask, deleteTask };
+const restoreTask = {
+  params: Joi.object().keys({
+    task_id: Joi.string().custom(objectId).required(),
+  }),
+};
+
+module.exports = {
+  createTask,
+  getTasks,
+  getTask,
+  updateTask,
+  deleteTask,
+  restoreTask,
+};

@@ -12,9 +12,18 @@ router
   .get(validateSchema(taskValidation.getTasks), taskController.getTasks);
 
 router
-  .route("/:taskId")
+  .route("/:task_id")
   .get(validateSchema(taskValidation.getTask), taskController.getTask)
   .patch(validateSchema(taskValidation.updateTask), taskController.updateTask)
-  .delete(validateSchema(taskValidation.deleteTask), taskController.deleteTask);
+  .delete(
+    validateSchema(taskValidation.deleteTask),
+    taskController.softDeleteTask
+  );
+
+router.patch(
+  "/:task_id/restore",
+  validateSchema(taskValidation.restoreTask),
+  taskController.restoreTask
+);
 
 module.exports = router;

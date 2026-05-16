@@ -10,7 +10,7 @@ const routes = [
   { path: "/user", route: userRoutes },
   { path: "/auth", route: authRoutes },
   { path: "/project", route: projectRoutes },
-  { path: "/project/:projectId/task", route: taskRoutes },
+  { path: "/tasks", route: taskRoutes },
 ];
 
 routes.forEach((route) => {

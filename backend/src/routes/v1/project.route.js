@@ -21,7 +21,7 @@ router
 
 // Get, update, delete (soft delete), restore
 router
-  .route("/:projectId")
+  .route("/:project_id")
   .get(
     validateSchema(projectValidation.getProject),
     projectController.getProject
@@ -37,9 +37,16 @@ router
 
 // Restore a trashed project
 router.patch(
-  "/:projectId/restore",
+  "/:project_id/restore",
   validateSchema(projectValidation.restoreProject),
   projectController.restoreProject
+);
+
+// Restore all tasks of a project
+router.patch(
+  "/:project_id/restore-tasks",
+  validateSchema(projectValidation.restoreProjectTasks),
+  projectController.restoreTasksByProject
 );
 
 module.exports = router;

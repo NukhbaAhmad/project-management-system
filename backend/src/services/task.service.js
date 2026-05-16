@@ -1,106 +1,67 @@
 const { status: httpStatus } = require("http-status");
 const { Task, Project } = require("#models");
 const { ApiError, pick } = require("#utils");
+const { taskHelpers } = require("#helpers");
+const { filterParams } = require("#constants");
 
-// Helper: ensure project exists and user owns it (optionally allow trashed)
-const validateProjectAccess = async (
-  projectId,
-  userId,
-  allowTrashed = false
-) => {
-  const project = await Project.findOne({ _id: projectId, createdBy: userId });
-  if (!project) {
-    throw new ApiError({
-      statusCode: httpStatus.NOT_FOUND,
-      message: "Project not found",
-    });
-  }
-  if (!allowTrashed && project.is_trashed) {
-    throw new ApiError({
-      statusCode: httpStatus.BAD_REQUEST,
-      message: "Cannot modify tasks of a trashed project",
-    });
-  }
-  return project;
-};
-
-// Create task
-const createTask = async (userId, body) => {
-  const { projectId, title, status } = body;
-  await validateProjectAccess(projectId, userId);
-  const task = await Task.create({ projectId, title, status });
-  return task;
-};
-
-// Get tasks by user (across projects) with filters
+// Get tasks
 const queryTasks = async (userId, query) => {
-  // First get all project IDs owned by the user
-  const projects = await Project.find({ createdBy: userId }).select("_id");
-  const projectIds = projects.map((p) => p._id);
-  if (projectIds.length === 0) {
-    return { results: [], page: 1, limit: 10, totalPages: 0, totalResults: 0 };
-  }
-
-  const filter = { projectId: { $in: projectIds } };
-  // Optional filters
-  if (query.projectId) {
-    if (!projectIds.some((id) => id.toString() === query.projectId)) {
-      throw new ApiError({
-        statusCode: httpStatus.FORBIDDEN,
-        message: "Access denied to this project",
-      });
-    }
-    filter.projectId = query.projectId;
-  }
+  const filter = { created_by: userId };
+  if (query.project_id) filter.project_id = query.project_id;
   if (query.status) filter.status = query.status;
   if (query.is_trashed !== undefined)
     filter.is_trashed = query.is_trashed === "true";
-  if (query.title) {
-    filter.title = { $regex: query.title, $options: "i" };
-  }
+  if (query.title) filter.title = { $regex: query.title, $options: "i" };
 
-  const options = pick(query, ["limit", "page", "sortBy"]);
+  const options = pick(query, filterParams.options);
   const tasks = await Task.paginate(filter, options);
   return tasks;
 };
 
-// Get single task by ID (with ownership check)
-const getTaskById = async (taskId, userId) => {
-  const task = await Task.findById(taskId).populate("projectId");
+// Create task
+const createTask = async (userId, body) => {
+  const { project_id, title, description, status } = body;
+  await taskHelpers.validateProjectAccess(project_id, userId);
+  const task = await Task.create({
+    project_id,
+    title,
+    description,
+    created_by: userId,
+    status,
+  });
+  return task;
+};
+
+// Get single task by ID
+const getTaskById = async (task_id, userId) => {
+  const task = await Task.findOne({
+    _id: task_id,
+    created_by: userId,
+  });
   if (!task) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
-      message: "Task not found",
-    });
-  }
-  if (task.projectId.createdBy.toString() !== userId) {
-    throw new ApiError({
-      statusCode: httpStatus.FORBIDDEN,
-      message: "Access denied",
+      message: "Task not found.",
     });
   }
   return task;
 };
 
-// Update task (title, status) – only if project not trashed (or allow update if task is trashed? we'll allow only if project not trashed)
-const updateTaskById = async (taskId, userId, updateBody) => {
-  const task = await Task.findById(taskId).populate("projectId");
+// Update task
+const updateTaskById = async (task_id, userId, updateBody) => {
+  const task = await Task.findOne({ _id: task_id, created_by: userId });
   if (!task) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
-      message: "Task not found",
+      message: "Task not found.",
     });
   }
-  if (task.projectId.createdBy.toString() !== userId) {
-    throw new ApiError({
-      statusCode: httpStatus.FORBIDDEN,
-      message: "Access denied",
-    });
-  }
-  if (task.projectId.is_trashed) {
+  // Check: Project should not be trashed.
+  const project = await Project.findById(task.project_id);
+  if (project.is_trashed) {
     throw new ApiError({
       statusCode: httpStatus.BAD_REQUEST,
-      message: "Cannot update tasks of a trashed project",
+      message: `Restore the project ${project.title} first to update the task.`,
     });
   }
   Object.assign(task, updateBody);
@@ -108,29 +69,56 @@ const updateTaskById = async (taskId, userId, updateBody) => {
   return task;
 };
 
-// Hard delete task – even if project trashed, but we allow
-const deleteTaskById = async (taskId, userId) => {
-  const task = await Task.findById(taskId).populate("projectId");
+// Delete task
+const softDeleteTaskById = async (task_id, userId) => {
+  const task = await Task.findOne({
+    _id: task_id,
+    created_by: userId,
+  });
   if (!task) {
     throw new ApiError({
       statusCode: httpStatus.NOT_FOUND,
-      message: "Task not found",
+      message: "Task not found.",
     });
   }
-  if (task.projectId.createdBy.toString() !== userId) {
+  if (task.is_trashed) {
     throw new ApiError({
-      statusCode: httpStatus.FORBIDDEN,
-      message: "Access denied",
+      statusCode: httpStatus.BAD_REQUEST,
+      message: "Task is already trashed.",
     });
   }
-  await Task.findByIdAndDelete(taskId);
-  return { success: true };
+  task.is_trashed = true;
+  await task.save();
+  return task;
 };
 
+const restoreTaskById = async (task_id, userId) => {
+  const task = await Task.findOne({
+    _id: task_id,
+    created_by: userId,
+    is_trashed: true,
+  });
+  if (!task) {
+    throw new ApiError({
+      statusCode: httpStatus.NOT_FOUND,
+      message: "Trashed task not found.",
+    });
+  }
+  if (!task.is_trashed) {
+    throw new ApiError({
+      statusCode: httpStatus.BAD_REQUEST,
+      message: "Task already restored successfully.",
+    });
+  }
+  task.is_trashed = false;
+  await task.save();
+  return task;
+};
 module.exports = {
   createTask,
   queryTasks,
+  restoreTaskById,
   getTaskById,
   updateTaskById,
-  deleteTaskById,
+  softDeleteTaskById,
 };

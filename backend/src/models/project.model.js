@@ -16,7 +16,7 @@ const projectSchema = new Schema(
       trim: true,
       default: "",
     },
-    createdBy: {
+    created_by: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -32,7 +32,7 @@ const projectSchema = new Schema(
 );
 
 // Index for efficient queries
-projectSchema.index({ title: 1, createdBy: 1, is_trashed: 1 });
+projectSchema.index({ title: 1, created_by: 1, is_trashed: 1 });
 projectSchema.plugin(paginate);
 projectSchema.plugin(toJSON);
 projectSchema.plugin(doesIdExists);
@@ -44,7 +44,7 @@ projectSchema.statics.isTitleTaken = async function (
   excludeProjectId = null
 ) {
   const query = {
-    createdBy: userId,
+    created_by: userId,
     title: { $regex: new RegExp(`^${title}$`, "i") },
     is_trashed: false,
   };
@@ -55,40 +55,35 @@ projectSchema.statics.isTitleTaken = async function (
   return !!project;
 };
 
-// Only enforce uniqueness for ACTIVE projects
-projectSchema.pre("save", async function () {
+projectSchema.pre("save", async function (next) {
   const project = this;
-  if (project.is_trashed) return;
-
-  const conflict = await project.constructor.isTitleTaken(
-    project.title,
-    project.createdBy,
-    project._id
-  );
-
-  if (conflict) {
-    const error = new Error(
-      `You already have an active project titled "${this.title}". Please choose a different title.`
+  if (!project.is_trashed) {
+    const conflict = await project.constructor.isTitleTaken(
+      project.title,
+      project.created_by,
+      project._id
     );
-    error.statusCode = 400;
-    throw error;
+    if (conflict) {
+      const error = new Error(
+        `You already have an active project titled "${project.title}". Please choose a different title.`
+      );
+      error.statusCode = 400;
+    }
   }
-});
 
-// Soft delete of tasks on trash
-projectSchema.post("save", async function (doc) {
-  if (doc.isModified("is_trashed")) {
+  // Soft delete of tasks on trash
+  if (this.isModified("is_trashed")) {
     const Task = require("./task.model");
     await Task.updateMany(
-      { projectId: doc._id },
-      { is_trashed: doc.is_trashed }
+      { project_id: this._id },
+      { is_trashed: this.is_trashed }
     );
   }
 });
 
 // Indexing for faster querying
 projectSchema.index(
-  { createdBy: 1, title: 1, is_trashed: 1 },
+  { created_by: 1, title: 1, is_trashed: 1 },
   { unique: true, partialFilterExpression: { is_trashed: false } }
 );
 
