@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+/* index.css */
+.react-hot-toast-success {
+  border-left: 4px solid #10b981 !important;
+}
+.react-hot-toast-error {
+  border-left: 4px solid #ef4444 !important;
+}
+.react-hot-toast-loading {
+  border-left: 4px solid #3b82f6 !important;
+}
