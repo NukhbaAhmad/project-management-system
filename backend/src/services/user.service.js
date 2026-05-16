@@ -34,7 +34,7 @@ const updateUserById = async (id, body) => {
   }
   Object.assign(user, body);
   await user.save();
-  return { message: "User updated successfully.", user };
+  return user;
 };
 
 const getUserById = async (userId) => {
