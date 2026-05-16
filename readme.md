@@ -127,13 +127,6 @@ text
 - MongoDB instance (local or Atlas)
 
 ### 1. Clone the repository
-To get this looking exactly right in your `README.md`, you need to copy the **raw Markdown code** so that the code blocks, bold text, and headers don't lose their formatting.
-
-Here is exactly how to do it:
-
-### Step 1: Copy the Raw Code
-
-Hover over the block below and click the **"Copy"** button in the top-right corner.
 
 ```markdown
 ## 🚀 Getting Started
@@ -174,8 +167,8 @@ npm run dev
 
 ```
 
-* **Frontend:** http://localhost:5173 *(Default Vite port)*
-* **Backend:** http://localhost:3000 *or* http://localhost:3001
+* **Frontend:** http://localhost:5173 *(Default Vite port)* **or** http://localhost:5174
+* **Backend:** http://localhost:3000 **or** http://localhost:3001
 
 #### Running Services Separately
 
@@ -209,18 +202,5 @@ npm run start:backend
 
 # Start the built frontend application
 npm run start:frontend
-
-```
-
-```
-
-### Step 2: Paste it into your project
-1. Open your project in VS Code (or your preferred editor).
-2. Open your `README.md` file.
-3. Delete the old, messy layout section.
-4. **Paste** (Ctrl+V or Cmd+V) this copied block directly into the file.
-5. Save the file. 
-
-If you are using VS Code, you can press **Ctrl + Shift + V** (or **Cmd + Shift + V** on Mac) to open a live preview and see how clean it looks.
 
 ```
