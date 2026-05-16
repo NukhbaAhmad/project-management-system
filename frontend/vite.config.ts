@@ -22,6 +22,7 @@ export default defineConfig({
       "@validations": path.resolve(__dirname, "./src/validations"),
       "@constants": path.resolve(__dirname, "./src/constants"),
       "@lib": path.resolve(__dirname, "./src/lib"),
+      "@utils": path.resolve(__dirname, "./src/utils"),
     },
   },
 });
