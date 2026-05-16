@@ -5,6 +5,7 @@ import SignUp from "@/pages/Auth/SignUp.tsx";
 import NotFound from "@/pages/NotFound";
 import Dashboard from "@/pages/Dashboard";
 import { ProtectedRoute } from "@/utils/protectedRoutes";
+import AppLayout from "@/layout/AppLayout";
 
 const App = () => {
   return (
@@ -13,7 +14,9 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Dashboard />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
