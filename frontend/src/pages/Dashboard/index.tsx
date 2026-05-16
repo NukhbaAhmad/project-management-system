@@ -8,6 +8,7 @@ import {
   TasksIcon,
 } from "@/icons";
 import LoadingSpinner from "@/components/loader";
+import NoData from "@/components/noData/NoData";
 
 const Dashboard = () => {
   const { data, isLoading, error } = useQuery({
@@ -25,11 +26,7 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#0d1321]">
-        <div className="text-red-400 font-medium bg-[#111827] px-6 py-4 rounded-xl border border-[#1f2937]">
-          Failed to load stats. Please try again later.
-        </div>
-      </div>
+        <NoData />
     );
   }
 
@@ -79,7 +76,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0d1321] text-[#e2e8f0] p-3">
+    <div className="w-full bg-[#0d1321] text-[#e2e8f0]">
       <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 max-w-[1600px] mx-auto">
         {cards.map((card, idx) => (
           <div

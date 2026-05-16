@@ -7,6 +7,7 @@ import {
   RestoreTasksIcon as DocumentArrowDownIcon,
 } from "@/icons";
 import NoData from "@/components/noData/NoData";
+import LoadingSpinner from "../loader";
 
 interface ProjectsTableProps {
   projects: Project[];
@@ -27,17 +28,13 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({
 }) => {
   if (loading) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        Loading projects...
-      </div>
+        <LoadingSpinner />
     );
   }
 
   if (projects.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
         <NoData />
-      </div>
     );
   }
 
