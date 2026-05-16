@@ -27,6 +27,7 @@ const envVarSchema = Joi.object()
 
     // Cors Configuration
     CORS_ORIGIN: Joi.string().required(),
+    CORS_FALLBACK_ORIGIN: Joi.string().required(),
     CORS_METHODS: Joi.string().required(),
     CORS_ALLOWED_HEADERS: Joi.string().required(),
   })
@@ -65,7 +66,7 @@ module.exports = {
     maxAllowedRequests: envVars.RATE_LIMITER_MAX_ALLOWED_REQUESTS,
   },
   cors: {
-    origin: envVars.CORS_ORIGIN,
+    origin: envVars.CORS_ORIGIN || envVars.CORS_FALLBACK_ORIGIN,
     methods: envVars.CORS_METHODS,
     allowedHeaders: envVars.CORS_ALLOWED_HEADERS,
   },

@@ -94,9 +94,11 @@ project-management-system/
 ├── backend/                      # Express API
 │   ├── src/
 │   │   ├── controllers/          # Route handlers
+│   │   ├── services/             # Routes executions
+│   │   ├── config/               # Different Services configuration
 │   │   ├── models/               # Mongoose schemas & models
 │   │   ├── routes/               # API endpoint definitions
-│   │   ├── middlewares/          # Auth, Joi validation, error handlers
+│   │   ├── middlewares/          # Auth, Joi validation, error handlers, error convertor
 │   │   └── validations/          # Joi validation schemas
 │   ├── .env                      # Backend environment variables
 │   └── package.json
@@ -104,6 +106,8 @@ project-management-system/
 │   ├── src/
 │   │   ├── api/                  # Axios configuration and services
 │   │   ├── components/           # Reusable UI components
+│   │   ├── constants /           # Constant Data
+│   │   ├── layout/               # App layout components
 │   │   ├── hooks/                # Custom TanStack Query hooks
 │   │   ├── pages/                # App views (Dashboard, Projects, Tasks, Profile)
 │   │   ├── types/                # Shared TypeScript definitions
@@ -127,19 +131,13 @@ text
 ```bash
 1. git clone https://github.com/your-username/project-management-system.git
 2. cd project-management-system
-3. Install dependencies (from root):
-- npm install
-- This will automatically install dependencies for both backend and frontend workspaces.
-
+3. npm install (This will automatically install dependencies for both backend and frontend workspaces.)
 4. Set up environment variables
 - Backend (backend/.env):
 - Frotend (frontend/.env):
+5. npm run dev (This starts both the backend and frontend concurrently.)
 
-bash
-npm run dev
-This starts both the backend and frontend concurrently.
-
-Backend: http://localhost:5000
+Backend: http://localhost:3000 OR http://localhost:3001
 
 Frontend: http://localhost:5173 (default Vite port)
 
@@ -156,61 +154,4 @@ Then start the built applications:
 bash
 npm run start:backend
 npm run start:frontend
-6. Default test user
-If the backend seeds initial data, you can log in with:
-
-Username/Email: testuser@example.com (or use the registration form)
-
-Password: password123
-
-📡 API Endpoints (Backend)
-All endpoints are prefixed with /api/v1.
-
-Method	Endpoint	Description
-POST	/auth/register	Register new user
-POST	/auth/login	Login (returns JWT)
-GET	/project	List projects (paginated, filter)
-POST	/project	Create project
-GET	/project/:id	Get single project
-PATCH	/project/:id	Update project
-DELETE	/project/:id	Soft delete (move to trash)
-PATCH	/project/:id/restore	Restore trashed project
-PATCH	/project/:id/restore-tasks	Restore all tasks of a project
-GET	/tasks	List tasks (filter by project, status, trashed)
-POST	/tasks	Create task
-GET	/tasks/:id	Get single task
-PATCH	/tasks/:id	Update task
-DELETE	/tasks/:id	Soft delete task
-PATCH	/tasks/:id/restore	Restore trashed task
-GET	/dashboard	Get statistics (projects, tasks)
-GET	/user/:id	Get user profile
-PATCH	/user/:id	Update user (name, username)
-DELETE	/user/:id	Delete user (cascade)
-🧪 Running Tests
-If you have added tests:
-
-bash
-# Backend tests
-npm test --workspace=backend
-
-# Frontend tests
-npm test --workspace=frontend
-📄 License
-MIT
-
-👤 Author
-Your Name – GitHub
-
-🙏 Acknowledgements
-Tailwind CSS – styling
-
-TanStack Query – data fetching
-
-React Hot Toast – notifications
-
-Express – backend framework
-
-MongoDB – database
-
-
 ```
