@@ -18,26 +18,29 @@ export default function UserDropdown() {
   function closeDropdown() {
     setIsOpen(false);
   }
-  function handleSignOut() {
+
+  function handleSignOut(e: React.MouseEvent) {
+    e.preventDefault(); 
     logoutUser();
     closeDropdown();
     navigate("/signin");
   }
+
   return (
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
+        className="flex items-center text-white dropdown-toggle"
       >
-        <span className="block mr-1 font-medium text-theme-sm">
-          {user?.name}
+        <span className="block mr-1 font-semibold text-sm">
+          {user?.name || "User"}
         </span>
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
+          className={`text-[#94a3b8] transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           width="18"
-          height="20"
+          height="18"
           viewBox="0 0 18 20"
           fill="none"
         >
@@ -54,38 +57,43 @@ export default function UserDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+        className="absolute right-0 mt-3 flex w-[260px] flex-col rounded-xl border border-[#1f2937] bg-[#111827] p-3 shadow-xl shadow-black/50"
       >
-        <div>
-          <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            {user?.name}
+        <div className="px-2 py-1">
+          <span className="block font-semibold text-sm text-black">
+            {user?.name || "User"}
           </span>
-          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            {user?.email}
+          <span className="mt-0.5 block text-xs text-[#94a3b8] truncate">
+            {user?.email || "user@gmail.com"}
           </span>
         </div>
 
-        <hr className="my-3 border-gray-200 dark:border-gray-800" />
+        <hr className="my-2 border-[#1f2937]" />
 
-        <ul className="flex flex-col gap-1">
+        <ul className="flex flex-col gap-0.5">
           <li>
             <DropdownItem
               onItemClick={closeDropdown}
               tag="a"
               to="/profile"
-              className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+              className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#94a3b8] rounded-lg group transition-colors duration-150 hover:bg-[#1e293b]/50 hover:text-[#e2e8f0]"
             >
-              <ProfileIcon />
+              <span className="text-[#94a3b8] group-hover:text-[#5865f2] transition-colors">
+                <ProfileIcon />
+              </span>
               Profile
             </DropdownItem>
           </li>
+
           <li>
             <Link
               to=""
               onClick={handleSignOut}
-              className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+              className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-[#94a3b8] rounded-lg group transition-colors duration-150 hover:bg-red-500/10 hover:text-red-400"
             >
-              <SignOut />
+              <span className="text-[#94a3b8] group-hover:text-red-400 transition-colors">
+                <SignOut />
+              </span>
               Sign out
             </Link>
           </li>
