@@ -17,7 +17,7 @@ This system provides a complete solution for managing projects and associated ta
 - Permanently delete account (with all related data)
 - Automatic session expiry handling (redirect to login)
 
-The frontend is built with **React**, **TypeScript**, **TanStack Query**, and **Tailwind CSS**.  
+The frontend is built with **React**, **TypeScript**,**axios**, **TanStack Query**, and **Tailwind CSS**.  
 The backend is a **REST API** built with **Express**, **MongoDB**, **JWT**, and **Joi** validation.
 
 ---
@@ -39,24 +39,23 @@ The backend is a **REST API** built with **Express**, **MongoDB**, **JWT**, and 
 - Profile page:
   - View and update name / username (email is read‑only)
   - Delete account with confirmation modal
-- Responsive dark/light theme (default dark)
 - Reusable components: `Pagination`, `ConfirmModal`, `ProjectFormModal`, `TaskFormModal`, `Filters`
 - Debounced search (800ms) to avoid excessive API calls
 - Toast notifications (`react‑hot‑toast`)
-- Session expired interceptor – auto logout on 401 / custom 500 message
+- Session expired interceptor – auto logout on 401
 
 ### 🧰 Stack
 
-| Technology          | Purpose                               |
-|---------------------|---------------------------------------|
-| React 18            | UI library                            |
-| TypeScript          | Type safety                           |
-| TanStack Query      | Server state & caching                |
-| React Router v6     | Routing & protected routes            |
-| Axios               | HTTP client + interceptors            |
-| Tailwind CSS        | Styling (custom dark theme)           |
-| react‑hot‑toast     | Notifications                         |
-| Vite                | Build tool & dev server               |
+| Technology      | Purpose                     |
+| --------------- | --------------------------- |
+| React 18        | UI library                  |
+| TypeScript      | Type safety                 |
+| TanStack Query  | Server state & caching      |
+| React Router v6 | Routing & protected routes  |
+| Axios           | HTTP client + interceptors  |
+| Tailwind CSS    | Styling (custom dark theme) |
+| react‑hot‑toast | Notifications               |
+| Vite            | Build tool & dev server     |
 
 ---
 
@@ -75,20 +74,21 @@ The backend is a **REST API** built with **Express**, **MongoDB**, **JWT**, and 
 
 ### 🧰 Stack
 
-| Technology          | Purpose                               |
-|---------------------|---------------------------------------|
-| Node.js             | Runtime environment                   |
-| Express             | Web framework                         |
-| MongoDB + Mongoose  | Database & ODM                        |
-| JWT (jsonwebtoken)  | Authentication                        |
-| bcryptjs            | Password hashing                      |
-| Joi                 | Schema validation                     |
-| dotenv              | Environment variables                 |
-| Nodemon             | Development auto‑restart              |
+| Technology         | Purpose                  |
+| ------------------ | ------------------------ |
+| Node.js            | Runtime environment      |
+| Express            | Web framework            |
+| MongoDB + Mongoose | Database & ODM           |
+| JWT (jsonwebtoken) | Authentication           |
+| bcryptjs           | Password hashing         |
+| Joi                | Schema validation        |
+| dotenv             | Environment variables    |
+| Nodemon            | Development auto‑restart |
 
 ---
 
 ## 📁 Monorepo Structure
+
 project-management-system/
 ├── backend/ # Express API
 │ ├── src/
@@ -121,27 +121,17 @@ project-management-system/
 
 ### 1. Clone the repository
 
-```bash
-git clone https://github.com/your-username/project-management-system.git
-cd project-management-system
-2. Install dependencies (from root)
-```bash
+````bash
+1. git clone https://github.com/your-username/project-management-system.git
+2. cd project-management-system
+3. Install dependencies (from root)
+bash
 npm install
 This will automatically install dependencies for both backend and frontend workspaces.
 
-3. Set up environment variables
+4. Set up environment variables
 Backend (backend/.env):
-
-env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/pms
-JWT_SECRET=your_super_secret_key_here
-Frontend (frontend/.env):
-
-env
-VITE_API_URL=http://localhost:5000/api/v1
-4. Run in development mode
-From the root directory:
+Frotend (frontend/.env):
 
 bash
 npm run dev
@@ -221,3 +211,4 @@ Express – backend framework
 MongoDB – database
 
 text
+````
