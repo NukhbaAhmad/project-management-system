@@ -127,31 +127,100 @@ text
 - MongoDB instance (local or Atlas)
 
 ### 1. Clone the repository
+To get this looking exactly right in your `README.md`, you need to copy the **raw Markdown code** so that the code blocks, bold text, and headers don't lose their formatting.
+
+Here is exactly how to do it:
+
+### Step 1: Copy the Raw Code
+
+Hover over the block below and click the **"Copy"** button in the top-right corner.
+
+```markdown
+## 🚀 Getting Started
+
+Follow these steps to set up and run the project locally.
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/your-username/project-management-system.git](https://github.com/your-username/project-management-system.git)
+cd project-management-system
+
+```
+
+### 2. Install Dependencies
+
+This project uses npm workspaces to manage both the frontend and backend. Run the following command in the root directory to install dependencies for both applications automatically:
 
 ```bash
-1. git clone https://github.com/your-username/project-management-system.git
-2. cd project-management-system
-3. npm install (This will automatically install dependencies for both backend and frontend workspaces.)
-4. Set up environment variables
-- Backend (backend/.env):
-- Frotend (frontend/.env):
-5. npm run dev (This starts both the backend and frontend concurrently.)
+npm install
 
-Backend: http://localhost:3000 OR http://localhost:3001
+```
 
-Frontend: http://localhost:5173 (default Vite port)
+### 3. Set Up Environment Variables
 
-To run each separately:
+Create a `.env` file in both the backend and frontend directories using the provided templates:
 
-bash
-npm run dev:backend   # only backend
-npm run dev:frontend  # only frontend
-5. Build for production
-bash
+* **Backend:** `backend/.env`
+* **Frontend:** `frontend/.env`
+
+### 4. Run the Application
+
+#### Development Mode (Concurrent)
+
+To spin up both the frontend and backend concurrently with hot-reloading:
+
+```bash
+npm run dev
+
+```
+
+* **Frontend:** http://localhost:5173 *(Default Vite port)*
+* **Backend:** http://localhost:3000 *or* http://localhost:3001
+
+#### Running Services Separately
+
+If you prefer to run the services individually, use the following commands from the root directory:
+
+```bash
+# Run only the backend
+npm run dev:backend
+
+# Run only the frontend
+npm run dev:frontend
+
+```
+
+---
+
+### 5. Production Build
+
+To build both applications for production deployment, run:
+
+```bash
 npm run build
-Then start the built applications:
 
-bash
+```
+
+Once the build completes, you can start the production-ready applications using:
+
+```bash
+# Start the built backend application
 npm run start:backend
+
+# Start the built frontend application
 npm run start:frontend
+
+```
+
+```
+
+### Step 2: Paste it into your project
+1. Open your project in VS Code (or your preferred editor).
+2. Open your `README.md` file.
+3. Delete the old, messy layout section.
+4. **Paste** (Ctrl+V or Cmd+V) this copied block directly into the file.
+5. Save the file. 
+
+If you are using VS Code, you can press **Ctrl + Shift + V** (or **Cmd + Shift + V** on Mac) to open a live preview and see how clean it looks.
+
 ```
