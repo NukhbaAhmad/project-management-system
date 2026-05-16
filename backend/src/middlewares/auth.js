@@ -1,29 +1,31 @@
 const passport = require("passport");
-const httpStatus = require("http-status");
-const { ApiError } = require("#utils");
+const { status: httpStatus } = require("http-status");
 
 const verifyCallback = (req, resolve, reject) => async (err, user, info) => {
   if (err || !user) {
     let message = "Please log in first to continue.";
 
-    // Specific errors
     if (info instanceof Error) {
       if (info.name === "TokenExpiredError") {
         message = "Your session has expired. Please log in again.";
       } else if (info.name === "JsonWebTokenError") {
         message = "Invalid token. Please log in again.";
-      } else if (info && info.message === "No auth token") {
-        message = "No authentication token found. Please provide a token.";
       } else {
         message = info.message;
       }
+    } else if (info && info.message === "No auth token") {
+      message = "No authentication token found. Please provide a token.";
     } else if (!info && !user) {
       message = "Authentication required. Please log in.";
     }
+
+    const { ApiError } = require("#utils");
+
     return reject(
       new ApiError({
         statusCode: httpStatus.UNAUTHORIZED,
         message: message,
+        isOperational: true,
       })
     );
   }
